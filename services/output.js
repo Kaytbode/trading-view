@@ -43,7 +43,7 @@ const HAandMomentumOutputs = (res, values, tf)=> {
 
     data.price = values[0][0].close;
     
-    return successResponseWithData (res, statusCodes.success, data);
+    successResponseWithData (res, statusCodes.success, data);
 }
 
 module.exports = { HAandMomentumOutputs, calculateHAandMomentumOutput };

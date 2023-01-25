@@ -16,7 +16,7 @@ const outputCA = (res, values)=> {
 
     data.avg = sum/values.length
 
-    return successResponseWithData (res, statusCodes.success, data);
+    successResponseWithData (res, statusCodes.success, data);
   }
 
 module.exports = { outputCA };
