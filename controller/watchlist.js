@@ -7,7 +7,6 @@ const { createChartPromise, calculateScorePandS,
 const { calculateHAandMomentumOutput } = require('../services/output');
 const { changeAnalysis } = require('../services/indicator');
 const { errorResponse, successResponseWithData } = require('../utils/response');
-const { statusCodes } = require('../utils/status');
 const { regexAsset, regexTF, regexRange } = require('../utils/regex');
 
 const addAsset = async (req, res) => {
@@ -18,9 +17,9 @@ const addAsset = async (req, res) => {
 
     try {
         await pool.query(text, values);
-        successResponseWithData(res, statusCodes.success, `${asset} successfully added to watchlist`)
+        successResponseWithData(res, `${asset} successfully added to watchlist`)
     } catch (error) {
-        errorResponse(res, statusCodes.serverError, error.stack);
+        errorResponse(res, error.stack);
     }
 }
 
@@ -32,9 +31,9 @@ const removeAsset = async (req, res) => {
 
     try {
         await pool.query(text, values);
-        successResponseWithData(res, statusCodes.success, `${asset} successfully removed from watchlist`)
+        successResponseWithData(res, `${asset} successfully removed from watchlist`)
     } catch (error) {
-        errorResponse(res, statusCodes.serverError, error.stack);
+        errorResponse(res, error.stack);
     }
 }
 
@@ -48,13 +47,13 @@ const getAllAssets = async (req, res) => {
 
     
     const { rows } = await pool.query(text).catch(err=> {
-        errorResponse(res, statusCodes.serverError, err.stack);
+        errorResponse(res, err.stack);
     });
 
     const assets = rows.map(({asset})=> asset);
 
     const sessionId = await loginUser().catch(err=> {
-        errorResponse(res, statusCodes.unauthorized, err);
+        errorResponse(res, err);
     });
 
     const client = new TradingView.Client({
@@ -64,7 +63,7 @@ const getAllAssets = async (req, res) => {
     
     assets.forEach(async (asset, idx, arr) => {
         if (!regexAsset.test(asset)) {
-            errorResponse(res, statusCodes.unprocessableEntity, `${asset} Invalid Asset`);
+            errorResponse(res, `${asset} Invalid Asset`);
         }
         //calculate the pulse 
         const tfPromise = [];
@@ -73,7 +72,7 @@ const getAllAssets = async (req, res) => {
 
         pulse.forEach(tf => {
             if (!regexTF.test(tf)) {
-                errorResponse(res, statusCodes.unprocessableEntity, `${tf} Invalid Timeframe`);
+                errorResponse(res, `${tf} Invalid Timeframe`);
             }
         
             const chart = createChart(tf, asset, 20, client);
@@ -84,7 +83,7 @@ const getAllAssets = async (req, res) => {
         });
 
         const pulseValues = await Promise.all(tfPromise).catch(err=> {
-            errorResponse(res, statusCodes.unprocessableEntity, err)
+            errorResponse(res, err)
         });
 
         let pulseValue = 0;
@@ -118,7 +117,7 @@ const getAllAssets = async (req, res) => {
 
         shift.forEach(range => {
             if (!regexRange.test(range)) {
-                errorResponse(res, statusCodes.unprocessableEntity, `${range} Invalid range`);
+                errorResponse(res,`${range} Invalid range`);
             }
         
             const chart = createChart('1', asset, +range, client);
@@ -129,7 +128,7 @@ const getAllAssets = async (req, res) => {
         });
 
         const shiftValues = await Promise.all(rangePromise).catch(err=> {
-            errorResponse(res, statusCodes.unprocessableEntity, err)
+            errorResponse(res, err)
         });
 
         shiftValues.forEach(val=> {
@@ -156,7 +155,7 @@ const getAllAssets = async (req, res) => {
             const chartwl = createChartPromise(wlchart);
 
             const wlValues = await Promise.all([chartwl]).catch(err=> {
-                errorResponse(res, statusCodes.unprocessableEntity, err)
+                errorResponse(res, err)
             });
 
             const wlist = wlValues[0];
@@ -186,7 +185,7 @@ const getAllAssets = async (req, res) => {
                         data.sort(compareBB);
                         break;
                 }
-                successResponseWithData(res, statusCodes.success, data);
+                successResponseWithData(res, data);
             }, 1000);
         }
     });

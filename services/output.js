@@ -1,6 +1,6 @@
 const { helkinAshi, momentum } = require('./indicator');
 const { successResponseWithData } = require('../utils/response');
-const { statusCodes } = require('../utils/status');
+
 
 const calculateHAandMomentumOutput = (pArr) => {
   const p = pArr[0];
@@ -43,7 +43,7 @@ const HAandMomentumOutputs = (res, values, tf)=> {
 
     data.price = values[0][0].close;
     
-    return successResponseWithData (res, statusCodes.success, data);
+    return successResponseWithData (res, data);
 }
 
 module.exports = { HAandMomentumOutputs, calculateHAandMomentumOutput };

@@ -1,6 +1,5 @@
 const { changeAnalysis } = require('./indicator');
 const { successResponseWithData } = require('../utils/response');
-const { statusCodes } = require('../utils/status');
 
 const outputCA = (res, values)=> {
     const data = {};
@@ -16,7 +15,7 @@ const outputCA = (res, values)=> {
 
     data.avg = sum/values.length
 
-    return successResponseWithData (res, statusCodes.success, data);
+    return successResponseWithData (res, data);
   }
 
 module.exports = { outputCA };
