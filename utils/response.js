@@ -1,11 +1,11 @@
-const errorResponse = (res, error) => {
-    return res.send({
+const errorResponse = (res, statusCode, error) => {
+    return res.status(statusCode).send({
         error
     });
 }
 
-const successResponseWithData = (res, data) => {
-    return res.send({
+const successResponseWithData = (res, statusCode, data) => {
+    return res.status(statusCode).send({
         data
     });
 }

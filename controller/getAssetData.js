@@ -4,6 +4,7 @@ const { loginUser } = require('../services/auth');
 const { createChartPromise } = require('../services/helper');
 const { HAandMomentumOutputs } = require('../services/output');
 const { errorResponse } = require('../utils/response');
+const { statusCodes } = require('../utils/status');
 const { regexAsset, regexTF } = require('../utils/regex');
 
 const getData = async (req, res) => {
@@ -12,11 +13,11 @@ const getData = async (req, res) => {
     const rangePromise = [];
 
     if (!regexAsset.test(asset)) {
-      errorResponse(res, 'Invalid Asset');
+      errorResponse(res, statusCodes.unprocessableEntity, 'Invalid Asset');
     }
 
     const sessionId = await loginUser().catch(err=> {
-      errorResponse(res, err);
+      errorResponse(res, statusCodes.unauthorized, err);
     });
     
     const client = new TradingView.Client({
@@ -25,7 +26,7 @@ const getData = async (req, res) => {
 
     tf.forEach(val => {
       if (!regexTF.test(val)) {
-        errorResponse(res, 'Invalid Timeframe');
+        errorResponse(res, statusCodes.unprocessableEntity, 'Invalid Timeframe');
       }
 
       const chart = createChart(val, asset, 20, client);
@@ -37,7 +38,7 @@ const getData = async (req, res) => {
     
     Promise.all(rangePromise).then((values) => {
       HAandMomentumOutputs(res, values, tf);
-    }).catch(err=> errorResponse(res, err));
+    }).catch(err=> errorResponse(res, statusCodes.unprocessableEntity, err));
 }
 
 module.exports = { getData };

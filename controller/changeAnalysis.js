@@ -4,6 +4,7 @@ const { loginUser } = require('../services/auth');
 const { createChartPromise } = require('../services/helper');
 const {  outputCA } = require('../services/outputCA');
 const { errorResponse } = require('../utils/response');
+const { statusCodes } = require('../utils/status');
 const { regexAsset, regexRange } = require('../utils/regex');
 
 const getAssetDataMinutes = async (req, res) => {
@@ -12,11 +13,11 @@ const getAssetDataMinutes = async (req, res) => {
   const rangePromise = [];
 
   if (!regexAsset.test(asset)) {
-    errorResponse(res, 'Invalid Asset');
+    errorResponse(res, statusCodes.unprocessableEntity, 'Invalid Asset');
   }
 
   const sessionId = await loginUser().catch(err=> {
-    errorResponse(res, err);
+    errorResponse(res, statusCodes.unauthorized, err);
   });
   
   const client = new TradingView.Client({
@@ -25,7 +26,7 @@ const getAssetDataMinutes = async (req, res) => {
 
   range.forEach(val => {
     if (!regexRange.test(val)) {
-      errorResponse(res, 'Invalid range');
+      errorResponse(res, statusCodes.unprocessableEntity, 'Invalid range');
     }
 
     const chart = createChart('1', asset, +val, client);
@@ -37,7 +38,7 @@ const getAssetDataMinutes = async (req, res) => {
   
   Promise.all(rangePromise).then((values) => {
     outputCA(res, values);
-  }).catch(err=> errorResponse(res, err));
+  }).catch(err=> errorResponse(res, statusCodes.unprocessableEntity, err));
 }
 
 module.exports = { getAssetDataMinutes };
