@@ -36,9 +36,11 @@ const getData = async (req, res) => {
       rangePromise.push(data);
     });
     
-    Promise.all(rangePromise).then((values) => {
-      HAandMomentumOutputs(res, values, tf);
-    }).catch(err=> errorResponse(res, statusCodes.unprocessableEntity, err));
+    const values = await Promise.all(rangePromise).catch(err =>{
+      errorResponse(res, statusCodes.unprocessableEntity, err);
+    })
+
+    HAandMomentumOutputs(res, values, tf);
 }
 
 module.exports = { getData };

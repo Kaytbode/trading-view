@@ -35,10 +35,12 @@ const getAssetDataMinutes = async (req, res) => {
 
     rangePromise.push(data);
   });
-  
-  Promise.all(rangePromise).then((values) => {
-    outputCA(res, values);
-  }).catch(err=> errorResponse(res, statusCodes.unprocessableEntity, err));
+
+  const values = await Promise.all(rangePromise).catch(err =>{
+    errorResponse(res, statusCodes.unprocessableEntity, err);
+  })
+
+  outputCA(res, values);
 }
 
 module.exports = { getAssetDataMinutes };
