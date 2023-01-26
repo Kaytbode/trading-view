@@ -53,12 +53,12 @@ const getAllAssets = async (req, res) => {
 
     const assets = rows.map(({asset})=> asset);
 
-    const sessionId = await loginUser().catch(err=> {
+    /*const sessionId = await loginUser().catch(err=> {
         errorResponse(res, statusCodes.unauthorized, err);
-    });
+    });*/
 
     const client = new TradingView.Client({
-        token: sessionId
+        //token: sessionId
     });
 
     

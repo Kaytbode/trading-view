@@ -16,12 +16,12 @@ const getAssetDataMinutes = async (req, res) => {
     errorResponse(res, statusCodes.unprocessableEntity, 'Invalid Asset');
   }
 
-  const sessionId = await loginUser().catch(err=> {
+  /*const sessionId = await loginUser().catch(err=> {
     errorResponse(res, statusCodes.unauthorized, err);
-  });
+  });*/
   
   const client = new TradingView.Client({
-    token: sessionId
+    // token: sessionId
   });
 
   range.forEach(val => {
