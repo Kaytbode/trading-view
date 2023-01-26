@@ -41,8 +41,8 @@ const getData = async (req, res) => {
     })
 
     console.log(values);
-    
-    HAandMomentumOutputs(res, values, tf);
+
+    return HAandMomentumOutputs(res, values, tf);
 }
 
 module.exports = { getData };
