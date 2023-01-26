@@ -12,9 +12,9 @@ const getData = async (req, res) => {
     const { tf } = req.query;
     const rangePromise = [];
 
-    if (!regexAsset.test(asset)) {
+    /*if (!regexAsset.test(asset)) {
       errorResponse(res, statusCodes.unprocessableEntity, 'Invalid Asset');
-    }
+    }*/
 
     const sessionId = await loginUser().catch(err=> {
       errorResponse(res, statusCodes.unauthorized, err);
@@ -25,9 +25,9 @@ const getData = async (req, res) => {
     });
 
     tf.forEach(val => {
-      if (!regexTF.test(val)) {
+     /* if (!regexTF.test(val)) {
         errorResponse(res, statusCodes.unprocessableEntity, 'Invalid Timeframe');
-      }
+      }*/
 
       const chart = createChart(val, asset, 20, client);
   
