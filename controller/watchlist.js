@@ -53,10 +53,10 @@ const getAllAssets = async (req, res) => {
 
     const assets = rows.map(({asset})=> asset);
 
-    const token = await getToken(res, statusCodes.unprocessableEntity);
+    // const token = await getToken(res, statusCodes.unprocessableEntity);
 
     const client = new TradingView.Client({
-        token
+       // token
     });
 
     
