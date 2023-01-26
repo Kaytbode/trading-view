@@ -113,7 +113,7 @@ const getAllAssets = async (req, res) => {
 
         // calculate the shift
         const rangePromise = [], keepShift = [];
-        let shiftValue = 0, sum = 0;
+        let sum = 0;
 
 
         shift.forEach(range => {
@@ -142,8 +142,10 @@ const getAllAssets = async (req, res) => {
             sum += ca;
         });
 
-        storeData.s = calculateShift(keepShift);
+        const shiftValue = calculateShift(keepShift);
+        storeData.s = shiftValue;
         storeData.avg = sum/(shiftValues.length);
+        console.log(pulseValue, shiftValue);
 
         storeData.score = calculateScorePandS(pulseValue, shiftValue);
 

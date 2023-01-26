@@ -1,5 +1,6 @@
 const TradingView = require('@mathieuc/tradingview');
 const { pool } = require('../database/connect');
+const { getToken } = require('../database/token');
 const { createChart } = require('../services/chart');
 const { loginUser, token } = require('../services/auth');
 const { createChartPromise } = require('../services/helper');
@@ -17,14 +18,8 @@ const getData = async (req, res) => {
       errorResponse(res, statusCodes.unprocessableEntity, 'Invalid Asset');
     }
 
-    const text = 'SELECT token FROM session WHERE id = 1';
-
-    const { rows } = await pool.query(text).catch(err=> {
-      errorResponse(res, statusCodes.serverError, err.stack);
-    });
-
-    const { token } = rows[0];
-    // console.log(token);
+    const token = await getToken(res, statusCodes.unprocessableEntity);
+    console.log(token);
    // const sessionId = await loginUser();
 
     const client = new TradingView.Client({
