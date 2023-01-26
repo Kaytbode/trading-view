@@ -16,10 +16,10 @@ const getData = async (req, res) => {
       errorResponse(res, statusCodes.unprocessableEntity, 'Invalid Asset');
     }
 
-    const sessionId = await loginUser();
+   // const sessionId = await loginUser();
     
     const client = new TradingView.Client({
-      token: sessionId
+     // token: sessionId
     });
 
     tf.forEach(val => {
