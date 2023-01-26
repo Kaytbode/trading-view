@@ -40,6 +40,8 @@ const getData = async (req, res) => {
       errorResponse(res, statusCodes.unprocessableEntity, err);
     })
 
+    console.log(values);
+    
     HAandMomentumOutputs(res, values, tf);
 }
 
