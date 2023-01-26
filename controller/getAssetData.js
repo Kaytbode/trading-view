@@ -16,12 +16,12 @@ const getData = async (req, res) => {
       errorResponse(res, statusCodes.unprocessableEntity, 'Invalid Asset');
     }
 
-    /*const sessionId = await loginUser().catch(err=> {
-      errorResponse(res, statusCodes.unauthorized, err);
+    const sessionId = await loginUser().catch(err=> {
+      return errorResponse(res, statusCodes.unauthorized, err);
     });
-    */
+    
     const client = new TradingView.Client({
-     // token: sessionId
+      token: sessionId
     });
 
     tf.forEach(val => {
@@ -39,8 +39,6 @@ const getData = async (req, res) => {
     const values = await Promise.all(rangePromise).catch(err =>{
       errorResponse(res, statusCodes.unprocessableEntity, err);
     })
-
-    console.log(values);
 
     return HAandMomentumOutputs(res, values, tf);
 }
