@@ -16,9 +16,7 @@ const getData = async (req, res) => {
       errorResponse(res, statusCodes.unprocessableEntity, 'Invalid Asset');
     }
 
-    const sessionId = await loginUser().catch(err=> {
-      return errorResponse(res, statusCodes.unauthorized, err);
-    });
+    const sessionId = await loginUser();
     
     const client = new TradingView.Client({
       token: sessionId
