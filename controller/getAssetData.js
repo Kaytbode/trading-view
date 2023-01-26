@@ -1,8 +1,6 @@
 const TradingView = require('@mathieuc/tradingview');
-const { pool } = require('../database/connect');
 const { getToken } = require('../database/token');
 const { createChart } = require('../services/chart');
-const { loginUser, token } = require('../services/auth');
 const { createChartPromise } = require('../services/helper');
 const { HAandMomentumOutputs } = require('../services/output');
 const { errorResponse } = require('../utils/response');
@@ -19,8 +17,6 @@ const getData = async (req, res) => {
     }
 
     const token = await getToken(res, statusCodes.unprocessableEntity);
-    console.log(token);
-   // const sessionId = await loginUser();
 
     const client = new TradingView.Client({
        token

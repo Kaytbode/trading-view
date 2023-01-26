@@ -1,6 +1,6 @@
 const TradingView = require('@mathieuc/tradingview');
 const { createChart } = require('../services/chart');
-const { loginUser } = require('../services/auth');
+const { getToken } = require('../database/token');
 const { createChartPromise } = require('../services/helper');
 const {  outputCA } = require('../services/outputCA');
 const { errorResponse } = require('../utils/response');
@@ -16,12 +16,10 @@ const getAssetDataMinutes = async (req, res) => {
     errorResponse(res, statusCodes.unprocessableEntity, 'Invalid Asset');
   }
 
-  /*const sessionId = await loginUser().catch(err=> {
-    errorResponse(res, statusCodes.unauthorized, err);
-  });*/
+  const token = await getToken(res, statusCodes.unprocessableEntity);
   
   const client = new TradingView.Client({
-    // token: sessionId
+    token
   });
 
   range.forEach(val => {

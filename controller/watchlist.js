@@ -1,7 +1,7 @@
 const { pool } = require('../database/connect');
 const TradingView = require('@mathieuc/tradingview');
 const { createChart } = require('../services/chart');
-const { loginUser } = require('../services/auth');
+const { getToken } = require('../database/token');
 const { createChartPromise, calculateScorePandS, 
         compareAB, compareABu, compareBBu, compareBB, calculateShift } = require('../services/helper');
 const { calculateHAandMomentumOutput } = require('../services/output');
@@ -53,12 +53,10 @@ const getAllAssets = async (req, res) => {
 
     const assets = rows.map(({asset})=> asset);
 
-    /*const sessionId = await loginUser().catch(err=> {
-        errorResponse(res, statusCodes.unauthorized, err);
-    });*/
+    const token = await getToken(res, statusCodes.unprocessableEntity);
 
     const client = new TradingView.Client({
-        //token: sessionId
+        token
     });
 
     
@@ -145,8 +143,7 @@ const getAllAssets = async (req, res) => {
         const shiftValue = calculateShift(keepShift);
         storeData.s = shiftValue;
         storeData.avg = sum/(shiftValues.length);
-        console.log(pulseValue, shiftValue);
-
+    
         storeData.score = calculateScorePandS(pulseValue, shiftValue);
 
         // calculate watchlist change analysis timeframe
