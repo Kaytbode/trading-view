@@ -90,10 +90,10 @@ const getAllAssets = async (req, res) => {
         pulseValues.every(val => {
             const { output } = calculateHAandMomentumOutput(val);
 
-            if (output < 0 && pulseValue < 0) {
+            if (output == -2 && pulseValue == -2) {
                 pulseValue = -2;
             }
-            else if (output > 0 && pulseValue > 0) {
+            else if (output == 2 && pulseValue == 2) {
                 pulseValue = 2;
             }
             else if (pulseValue == 0) {
