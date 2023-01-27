@@ -54,8 +54,8 @@ const compareAB = (a, b) => {
     if (a.score < b.score ) return -1;
     if (a.score > b.score ) return 1;
     if (a.score === b.score) {
-       if (a.wltf > b.wltf) return -1;
-       if (a.wltf < b.wltf) return 1;
+       if (a.wltf > b.wltf) return 1;
+       if (a.wltf < b.wltf) return -1;
        return 0;
     }
 }
@@ -83,8 +83,14 @@ const compareBBu = (a, b) => {
         if (a.score < b.score ) return 1;
         if (a.score > b.score ) return -1;
         if(a.score === b.score){
-            if (a.wltf > b.wltf) return -1;
-            if (a.wltf < b.wltf) return 1;
+            if (a.score > 0) {
+                if (a.wltf > b.wltf) return -1;
+                if (a.wltf < b.wltf) return 1;
+            }
+            if (a.score < 0) {
+                if (a.wltf > b.wltf) return 1;
+                if (a.wltf < b.wltf) return -1;
+            }
         }
        return 0;
     }
@@ -103,8 +109,14 @@ const compareBB = (a, b) => {
         if (a.score < b.score ) return -1;
         if (a.score > b.score ) return 1;
         if(a.score === b.score){
-            if (a.wltf > b.wltf) return -1;
-            if (a.wltf < b.wltf) return 1;
+            if (a.score > 0) {
+                if (a.wltf > b.wltf) return -1;
+                if (a.wltf < b.wltf) return 1;
+            }
+            if (a.score < 0) {
+                if (a.wltf > b.wltf) return 1;
+                if (a.wltf < b.wltf) return -1;
+            }
         }
        return 0;
     }
